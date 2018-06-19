@@ -2,12 +2,21 @@ clear; clc;
 
 J=1;
 U=2;
+mu=0;
 dim_site=4;%Dimension del espacio (fija)
-N=4;%Numero de sitios
+N=5;%Numero de sitios
 Np=N-1;%numero de sitios diferentes a la impureza en la red
+
+J_v=ones(1,Np);
 dim=(dim_site).^N;%dimension del espacio de Hilbert
 disp("Parametros")
-disp("J="+num2str(J)+", U="+num2str(U)+", Sitios="+num2str(N)+", sitios libres="+num2str(Np))
+disp("J="+num2str(J)+", U="+num2str(U)+", mu="+num2str(mu)+", Sitios="+num2str(N)+", sitios libres="+num2str(Np))
+
+%Llenando hopping por sitios
+J_VALORES=[0.1,4.9,0.7,0.94];
+for i=(1:Np)
+   J_v(i)=J_VALORES(i); 
+end
 
 %Creando matrices para estados Fermionicos
 C_d_do=[0,0,0,0;
@@ -53,7 +62,7 @@ end
 
 
 disp("Comenzando el calculo")
-[Ham,Num]=FERMI_HUBBARD_ANDERSON_FUNCTION(C_d_do,C_do,N_do,C_d_up,C_up,N_up,P,A_id,P_m,J,U,dim,N,Np);
+[Ham,Num]=FERMI_HUBBARD_ANDERSON_FUNCTION(P,A_id,P_m,J_v,U,mu,dim,N,Np);
 [V,D]=eig(Ham);
 GS=V(:,1);
 E0=D(1,1);
